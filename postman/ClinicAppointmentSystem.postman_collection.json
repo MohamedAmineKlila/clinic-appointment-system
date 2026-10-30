@@ -1,0 +1,428 @@
+{
+  "info": {
+    "name": "Clinic Appointment System",
+    "description": "Postman collection for Clinic Appointment Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Specialties - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/specialties"
+      }
+    },
+    {
+      "name": "Specialties - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/specialties/1"
+      }
+    },
+    {
+      "name": "Specialties - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Neurology\",\n  \"description\": \"Nervous system\"\n}"
+        },
+        "url": "{{baseUrl}}/api/specialties"
+      }
+    },
+    {
+      "name": "Specialties - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Neurology\",\n  \"description\": \"Brain and nervous system\"\n}"
+        },
+        "url": "{{baseUrl}}/api/specialties/1"
+      }
+    },
+    {
+      "name": "Specialties - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/specialties/5"
+      }
+    },
+    {
+      "name": "Specialties - Duplicate (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Cardiology\",\n  \"description\": \"Duplicate\"\n}"
+        },
+        "url": "{{baseUrl}}/api/specialties"
+      }
+    },
+    {
+      "name": "Doctors - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doctors"
+      }
+    },
+    {
+      "name": "Doctors - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doctors/1"
+      }
+    },
+    {
+      "name": "Doctors - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ben Ali\",\n  \"email\": \"mohamed.benali2@clinic.com\",\n  \"phone\": \"1234567895\",\n  \"licenseNumber\": \"LIC006\",\n  \"specialtyId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors"
+      }
+    },
+    {
+      "name": "Doctors - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.smith@clinic.com\",\n  \"phone\": \"1234567890\",\n  \"licenseNumber\": \"LIC001\",\n  \"specialtyId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/1"
+      }
+    },
+    {
+      "name": "Doctors - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/doctors/6"
+      }
+    },
+    {
+      "name": "Doctors - Available",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doctors/available?date=2026-11-01"
+      }
+    },
+    {
+      "name": "Doctors - By Specialty",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doctors/specialty/1"
+      }
+    },
+    {
+      "name": "Doctors - Not Found (404)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doctors/999"
+      }
+    },
+    {
+      "name": "Patients - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/patients"
+      }
+    },
+    {
+      "name": "Patients - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/patients/1"
+      }
+    },
+    {
+      "name": "Patients - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Amira\",\n  \"lastName\": \"Bouazizi\",\n  \"email\": \"amira2.bouazizi@email.com\",\n  \"phone\": \"9876543215\",\n  \"dateOfBirth\": \"1993-03-10\"\n}"
+        },
+        "url": "{{baseUrl}}/api/patients"
+      }
+    },
+    {
+      "name": "Patients - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Martin\",\n  \"email\": \"alice.martin@email.com\",\n  \"phone\": \"9876543210\",\n  \"dateOfBirth\": \"1990-05-12\"\n}"
+        },
+        "url": "{{baseUrl}}/api/patients/1"
+      }
+    },
+    {
+      "name": "Patients - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/patients/6"
+      }
+    },
+    {
+      "name": "Patients - Invalid (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"\",\n  \"email\": \"bad-email\"\n}"
+        },
+        "url": "{{baseUrl}}/api/patients"
+      }
+    },
+    {
+      "name": "Appointments - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments"
+      }
+    },
+    {
+      "name": "Appointments - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments/1"
+      }
+    },
+    {
+      "name": "Appointments - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-01T09:00:00\",\n  \"reason\": \"Routine checkup\",\n  \"status\": \"BOOKED\"\n}"
+        },
+        "url": "{{baseUrl}}/api/appointments"
+      }
+    },
+    {
+      "name": "Appointments - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-02T09:00:00\",\n  \"reason\": \"Updated checkup\",\n  \"status\": \"BOOKED\"\n}"
+        },
+        "url": "{{baseUrl}}/api/appointments/1"
+      }
+    },
+    {
+      "name": "Appointments - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/appointments/8"
+      }
+    },
+    {
+      "name": "Appointments - By Doctor and Date",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments/doctor/1/date/2026-11-01"
+      }
+    },
+    {
+      "name": "Appointments - By Patient",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments/patient/1"
+      }
+    },
+    {
+      "name": "Appointments - Count by Status",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments/status/BOOKED/count"
+      }
+    },
+    {
+      "name": "Appointments - Status and Date Range",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/appointments/status/BOOKED/date-range?start=2026-11-01&end=2026-11-30"
+      }
+    },
+    {
+      "name": "Medical Records - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/medical-records"
+      }
+    },
+    {
+      "name": "Medical Records - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/medical-records/1"
+      }
+    },
+    {
+      "name": "Medical Records - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bloodType\": \"O+\",\n  \"allergies\": \"None\",\n  \"chronicConditions\": \"None\",\n  \"patientId\": 6\n}"
+        },
+        "url": "{{baseUrl}}/api/medical-records"
+      }
+    },
+    {
+      "name": "Medical Records - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bloodType\": \"A+\",\n  \"allergies\": \"Peanuts\",\n  \"chronicConditions\": \"None\",\n  \"patientId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/medical-records/1"
+      }
+    },
+    {
+      "name": "Medical Records - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/medical-records/6"
+      }
+    },
+    {
+      "name": "Prescriptions - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/prescriptions"
+      }
+    },
+    {
+      "name": "Prescriptions - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/prescriptions/1"
+      }
+    },
+    {
+      "name": "Prescriptions - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"medication\": \"Ibuprofen\",\n  \"dosage\": \"200mg\",\n  \"instructions\": \"Take as needed\",\n  \"issuedDate\": \"2026-11-01\",\n  \"appointmentId\": 3\n}"
+        },
+        "url": "{{baseUrl}}/api/prescriptions"
+      }
+    },
+    {
+      "name": "Prescriptions - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"medication\": \"Aspirin\",\n  \"dosage\": \"100mg\",\n  \"instructions\": \"Take once daily\",\n  \"issuedDate\": \"2026-11-01\",\n  \"appointmentId\": 2\n}"
+        },
+        "url": "{{baseUrl}}/api/prescriptions/1"
+      }
+    },
+    {
+      "name": "Prescriptions - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/prescriptions/3"
+      }
+    }
+  ]
+}
