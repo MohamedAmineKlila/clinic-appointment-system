@@ -81,10 +81,21 @@ Relationships:
 Request DTOs use Jakarta Bean Validation annotations such as @NotBlank, @Email, @Size, @NotNull, @Future, and phone number patterns. Controllers use @Valid. A global exception handler returns a consistent JSON error structure with timestamp, status, error, message, path, and field-level details for validation errors. HTTP status codes: 200, 201, 204, 400, 404, 409, 500.
 
 ## MySQL setup instructions
-1. Install MySQL and start the service.
-2. Create the database if needed: CREATE DATABASE clinic_db;
-3. Update src/main/resources/application.properties with your MySQL username and password.
-4. Ensure MySQL runs on port 3306.
+1. Install MySQL 8 and start the MySQL service.
+2. Open the MySQL command line:
+   ```bash
+   mysql -u root -p
+   ```
+3. Create the database:
+   ```sql
+   CREATE DATABASE clinic_db;
+   ```
+4. Exit MySQL:
+   ```sql
+   exit;
+   ```
+5. Update `src/main/resources/application.properties` with your MySQL username and password, or set the `DB_PASSWORD` environment variable.
+6. Ensure MySQL runs on port 3306.
 
 ## How to run the project with Maven
 1. Open a terminal in the project root.
