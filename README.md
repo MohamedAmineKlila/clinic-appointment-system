@@ -15,7 +15,7 @@ The Clinic Appointment Management System is a Spring Boot REST API for managing 
 - Specialty: id, name
 - Doctor: id, firstName, lastName, email, phone, licenseNumber; belongs to one Specialty
 - Patient: id, firstName, lastName, email, phone, dateOfBirth; has one MedicalRecord
-- Appointment: id, appointmentDateTime, status; belongs to one Doctor and one Patient; may have one Prescription
+- Appointment: id, appointmentDateTime, status, reason; belongs to one Doctor and one Patient; may have one Prescription
 - MedicalRecord: id, bloodType, allergies, chronicConditions; belongs to one Patient
 - Prescription: id, medication, dosage, instructions, issuedDate; belongs to one Appointment
 
@@ -101,6 +101,11 @@ Request DTOs use Jakarta Bean Validation annotations such as @NotBlank, @Email, 
 1. Open a terminal in the project root.
 2. Run: mvn spring-boot:run
 3. The API will be available at http://localhost:8080
+
+## How to run tests
+1. Open a terminal in the project root.
+2. Run: mvn test
+3. Tests use an in-memory H2 database configured in src/test/resources/application.properties.
 
 ## How to import and use the Postman collection
 1. Open Postman.
