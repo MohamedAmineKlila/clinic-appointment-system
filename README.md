@@ -12,7 +12,7 @@ The Clinic Appointment Management System is a Spring Boot REST API for managing 
 - Postman
 
 ## Entity list and relationships
-- Specialty: id, name
+- Specialty: id, name, description
 - Doctor: id, firstName, lastName, email, phone, licenseNumber; belongs to one Specialty
 - Patient: id, firstName, lastName, email, phone, dateOfBirth; has one MedicalRecord
 - Appointment: id, appointmentDateTime, status, reason; belongs to one Doctor and one Patient; may have one Prescription
