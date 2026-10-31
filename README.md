@@ -85,6 +85,8 @@ Relationships:
 ## Validation and error handling
 Request DTOs use Jakarta Bean Validation annotations such as @NotBlank, @Email, @Size, @NotNull, @Future, and phone number patterns. Controllers use @Valid. A global exception handler returns a consistent JSON error structure with timestamp, status, error, message, path, and field-level details for validation errors. HTTP status codes: 200, 201, 204, 400, 404, 409, 500.
 
+The split between 400 and 409 is deliberate: HTTP 400 Bad Request means the request itself is invalid (missing fields, malformed email, a date in the past), so the client should fix the payload. HTTP 409 Conflict means the request is valid but clashes with the current state of the data: double-booking a doctor at an exact BOOKED slot (AppointmentConflictException) or creating a specialty with a name that already exists (DuplicateResourceException). The conflict is detected in the service layer against existing rows, which is exactly what 409 is for.
+
 ## MySQL setup instructions
 1. Install MySQL 8 and start the MySQL service.
 2. Open the MySQL command line:

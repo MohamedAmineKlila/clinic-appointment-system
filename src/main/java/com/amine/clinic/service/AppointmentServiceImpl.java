@@ -2,6 +2,7 @@ package com.amine.clinic.service;
 
 import com.amine.clinic.dto.AppointmentRequestDTO;
 import com.amine.clinic.dto.AppointmentResponseDTO;
+import com.amine.clinic.exception.AppointmentConflictException;
 import com.amine.clinic.exception.BusinessRuleException;
 import com.amine.clinic.exception.ResourceNotFoundException;
 import com.amine.clinic.model.Appointment;
@@ -120,7 +121,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                         && a.getStatus() == AppointmentStatus.BOOKED
                         && (excludeId == null || !a.getId().equals(excludeId)));
         if (conflict) {
-            throw new BusinessRuleException("Doctor already has a BOOKED appointment at the same date and time");
+            throw new AppointmentConflictException("Doctor already has a BOOKED appointment at the same date and time");
         }
     }
 
