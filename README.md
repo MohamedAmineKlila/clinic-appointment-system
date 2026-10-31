@@ -3,6 +3,11 @@
 ## Business context
 The Clinic Appointment Management System is a Spring Boot REST API for managing clinic operations. It helps clinics manage specialties, doctors, patients, appointments, medical records, and prescriptions. The system enforces business rules such as unique emails and license numbers, one medical record per patient, one prescription per appointment, and prevents conflicting doctor appointments.
 
+## Project at a glance
+- **36 REST API endpoints** across 6 resources (specialties, doctors, patients, appointments, medical records, prescriptions)
+- **9 custom repository queries** for clinic-specific searches (appointments by doctor/date/patient/status, available doctors, doctors by specialty, and lookups by email, patient, and appointment)
+- 6 JPA entities backed by MySQL, with Jakarta Bean Validation and a global exception handler
+
 ## Technologies used
 - Java
 - Spring Boot
@@ -26,7 +31,7 @@ Relationships:
 - Patient OneToOne MedicalRecord
 - Appointment OneToOne Prescription (optional)
 
-## REST API endpoints
+## REST API endpoints (36 endpoints)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | /api/specialties | List all specialties |
@@ -66,7 +71,7 @@ Relationships:
 | PUT | /api/prescriptions/{id} | Update prescription |
 | DELETE | /api/prescriptions/{id} | Delete prescription |
 
-## Custom business queries
+## Custom business queries (9 custom repository queries)
 - Find all appointments for a specific doctor on a specific date.
 - Find all appointments for a specific patient.
 - Count appointments by status.
