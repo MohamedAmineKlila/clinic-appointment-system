@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
-    List<Doctor> findBySpecialtyId(Long specialtyId);
+    List<Doctor> findBySpecialty_Id(Long specialtyId);
 
     Optional<Doctor> findByEmail(String email);
 

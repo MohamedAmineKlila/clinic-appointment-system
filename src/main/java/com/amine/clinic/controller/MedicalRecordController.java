@@ -1,7 +1,7 @@
 package com.amine.clinic.controller;
 
-import com.amine.clinic.dto.MedicalRecordRequestDTO;
-import com.amine.clinic.dto.MedicalRecordResponseDTO;
+import com.amine.clinic.model.MedicalRecord;
+
 import com.amine.clinic.service.MedicalRecordService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,22 +28,22 @@ public class MedicalRecordController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MedicalRecordResponseDTO>> findAll() {
+    public ResponseEntity<List<MedicalRecord>> findAll() {
         return ResponseEntity.ok(medicalRecordService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicalRecordResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<MedicalRecord> findById(@PathVariable Long id) {
         return ResponseEntity.ok(medicalRecordService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<MedicalRecordResponseDTO> create(@Valid @RequestBody MedicalRecordRequestDTO request) {
+    public ResponseEntity<MedicalRecord> create(@Valid @RequestBody MedicalRecord request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(medicalRecordService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedicalRecordResponseDTO> update(@PathVariable Long id, @Valid @RequestBody MedicalRecordRequestDTO request) {
+    public ResponseEntity<MedicalRecord> update(@PathVariable Long id, @Valid @RequestBody MedicalRecord request) {
         return ResponseEntity.ok(medicalRecordService.update(id, request));
     }
 

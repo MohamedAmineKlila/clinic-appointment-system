@@ -1,19 +1,18 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.SpecialtyRequestDTO;
-import com.amine.clinic.dto.SpecialtyResponseDTO;
+import com.amine.clinic.model.Specialty;
 
 import java.util.List;
 
 public interface SpecialtyService {
 
-    SpecialtyResponseDTO create(SpecialtyRequestDTO request);
+    Specialty create(Specialty specialty);
 
-    SpecialtyResponseDTO findById(Long id);
+    Specialty findById(Long id);
 
-    List<SpecialtyResponseDTO> findAll();
+    List<Specialty> findAll();
 
-    SpecialtyResponseDTO update(Long id, SpecialtyRequestDTO request);
+    Specialty update(Long id, Specialty specialty);
 
     void delete(Long id);
 }

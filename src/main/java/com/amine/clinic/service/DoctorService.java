@@ -1,24 +1,23 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.DoctorRequestDTO;
-import com.amine.clinic.dto.DoctorResponseDTO;
+import com.amine.clinic.model.Doctor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface DoctorService {
 
-    DoctorResponseDTO create(DoctorRequestDTO request);
+    Doctor create(Doctor doctor);
 
-    DoctorResponseDTO findById(Long id);
+    Doctor findById(Long id);
 
-    List<DoctorResponseDTO> findAll();
+    List<Doctor> findAll();
 
-    DoctorResponseDTO update(Long id, DoctorRequestDTO request);
+    Doctor update(Long id, Doctor doctor);
 
     void delete(Long id);
 
-    List<DoctorResponseDTO> findBySpecialty(Long specialtyId);
+    List<Doctor> findBySpecialty(Long specialtyId);
 
-    List<DoctorResponseDTO> findAvailable(LocalDate date);
+    List<Doctor> findAvailable(LocalDate date);
 }

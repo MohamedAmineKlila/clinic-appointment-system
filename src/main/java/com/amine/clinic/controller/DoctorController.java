@@ -1,7 +1,7 @@
 package com.amine.clinic.controller;
 
-import com.amine.clinic.dto.DoctorRequestDTO;
-import com.amine.clinic.dto.DoctorResponseDTO;
+import com.amine.clinic.model.Doctor;
+
 import com.amine.clinic.service.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,22 +30,22 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DoctorResponseDTO>> findAll() {
+    public ResponseEntity<List<Doctor>> findAll() {
         return ResponseEntity.ok(doctorService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Doctor> findById(@PathVariable Long id) {
         return ResponseEntity.ok(doctorService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<DoctorResponseDTO> create(@Valid @RequestBody DoctorRequestDTO request) {
+    public ResponseEntity<Doctor> create(@Valid @RequestBody Doctor request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DoctorResponseDTO> update(@PathVariable Long id, @Valid @RequestBody DoctorRequestDTO request) {
+    public ResponseEntity<Doctor> update(@PathVariable Long id, @Valid @RequestBody Doctor request) {
         return ResponseEntity.ok(doctorService.update(id, request));
     }
 
@@ -56,12 +56,12 @@ public class DoctorController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<DoctorResponseDTO>> findAvailable(@RequestParam LocalDate date) {
+    public ResponseEntity<List<Doctor>> findAvailable(@RequestParam LocalDate date) {
         return ResponseEntity.ok(doctorService.findAvailable(date));
     }
 
     @GetMapping("/specialty/{specialtyId}")
-    public ResponseEntity<List<DoctorResponseDTO>> findBySpecialty(@PathVariable Long specialtyId) {
+    public ResponseEntity<List<Doctor>> findBySpecialty(@PathVariable Long specialtyId) {
         return ResponseEntity.ok(doctorService.findBySpecialty(specialtyId));
     }
 }

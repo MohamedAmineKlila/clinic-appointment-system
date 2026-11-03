@@ -1,5 +1,7 @@
 package com.amine.clinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,6 +24,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonPropertyOrder({"id", "name", "description"})
 public class Specialty {
 
     @Id
@@ -37,6 +40,7 @@ public class Specialty {
     @Column(length = 300)
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "specialty", fetch = FetchType.LAZY)
     private List<Doctor> doctors = new ArrayList<>();
 }

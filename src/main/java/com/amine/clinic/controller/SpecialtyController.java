@@ -1,7 +1,7 @@
 package com.amine.clinic.controller;
 
-import com.amine.clinic.dto.SpecialtyRequestDTO;
-import com.amine.clinic.dto.SpecialtyResponseDTO;
+import com.amine.clinic.model.Specialty;
+
 import com.amine.clinic.service.SpecialtyService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,22 +28,22 @@ public class SpecialtyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SpecialtyResponseDTO>> findAll() {
+    public ResponseEntity<List<Specialty>> findAll() {
         return ResponseEntity.ok(specialtyService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SpecialtyResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Specialty> findById(@PathVariable Long id) {
         return ResponseEntity.ok(specialtyService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<SpecialtyResponseDTO> create(@Valid @RequestBody SpecialtyRequestDTO request) {
+    public ResponseEntity<Specialty> create(@Valid @RequestBody Specialty request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SpecialtyResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SpecialtyRequestDTO request) {
+    public ResponseEntity<Specialty> update(@PathVariable Long id, @Valid @RequestBody Specialty request) {
         return ResponseEntity.ok(specialtyService.update(id, request));
     }
 

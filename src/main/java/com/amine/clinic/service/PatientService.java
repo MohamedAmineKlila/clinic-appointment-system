@@ -1,19 +1,18 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.PatientRequestDTO;
-import com.amine.clinic.dto.PatientResponseDTO;
+import com.amine.clinic.model.Patient;
 
 import java.util.List;
 
 public interface PatientService {
 
-    PatientResponseDTO create(PatientRequestDTO request);
+    Patient create(Patient patient);
 
-    PatientResponseDTO findById(Long id);
+    Patient findById(Long id);
 
-    List<PatientResponseDTO> findAll();
+    List<Patient> findAll();
 
-    PatientResponseDTO update(Long id, PatientRequestDTO request);
+    Patient update(Long id, Patient patient);
 
     void delete(Long id);
 }

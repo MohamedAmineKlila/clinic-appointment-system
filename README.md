@@ -16,6 +16,26 @@ The Clinic Appointment Management System is a Spring Boot REST API for managing 
 - Lombok
 - Postman
 
+## Project structure
+The code follows the layered architecture of the course: each layer lives in its own package under `com.amine.clinic`, and the entities are passed directly between controller, service, and repository.
+
+```
+src/main/java/com/amine/clinic/
+├── ClinicApplication.java   Spring Boot entry point
+├── model/                   JPA entities + Jakarta Bean Validation annotations
+├── repository/              Spring Data JPA repositories (CRUD + custom queries)
+├── service/                 business logic and business-rule checks
+├── controller/              REST controllers (endpoints and HTTP status codes)
+├── exception/               custom exceptions + global exception handler
+└── config/                  data seeder (initial sample data)
+
+src/main/resources/
+└── application.properties
+
+src/test/java/com/amine/clinic/
+└── service and context tests
+```
+
 ## Entity list and relationships
 - Specialty: id, name, description
 - Doctor: id, firstName, lastName, email, phone, licenseNumber; belongs to one Specialty
@@ -83,7 +103,7 @@ Relationships:
 - Find prescription by appointment ID.
 
 ## Validation and error handling
-Request DTOs use Jakarta Bean Validation annotations such as @NotBlank, @Email, @Size, @NotNull, @Future, and phone number patterns. Controllers use @Valid. A global exception handler returns a consistent JSON error structure with timestamp, status, error, message, path, and field-level details for validation errors. HTTP status codes: 200, 201, 204, 400, 404, 409, 500.
+The JPA entities in `model/` carry Jakarta Bean Validation annotations such as @NotBlank, @Email, @Size, @NotNull, @Future, and phone number patterns. Controllers validate the received entity with @Valid before it reaches the service layer. A global exception handler returns a consistent JSON error structure with timestamp, status, error, message, path, and field-level details for validation errors. HTTP status codes: 200, 201, 204, 400, 404, 409, 500.
 
 The split between 400 and 409 is deliberate: HTTP 400 Bad Request means the request itself is invalid (missing fields, malformed email, a date in the past), so the client should fix the payload. HTTP 409 Conflict means the request is valid but clashes with the current state of the data: double-booking a doctor at an exact BOOKED slot (AppointmentConflictException) or creating a specialty with a name that already exists (DuplicateResourceException). The conflict is detected in the service layer against existing rows, which is exactly what 409 is for.
 

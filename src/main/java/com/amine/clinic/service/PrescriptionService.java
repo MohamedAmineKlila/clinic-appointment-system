@@ -1,19 +1,18 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.PrescriptionRequestDTO;
-import com.amine.clinic.dto.PrescriptionResponseDTO;
+import com.amine.clinic.model.Prescription;
 
 import java.util.List;
 
 public interface PrescriptionService {
 
-    PrescriptionResponseDTO create(PrescriptionRequestDTO request);
+    Prescription create(Prescription prescription);
 
-    PrescriptionResponseDTO findById(Long id);
+    Prescription findById(Long id);
 
-    List<PrescriptionResponseDTO> findAll();
+    List<Prescription> findAll();
 
-    PrescriptionResponseDTO update(Long id, PrescriptionRequestDTO request);
+    Prescription update(Long id, Prescription prescription);
 
     void delete(Long id);
 }

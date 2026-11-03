@@ -1,5 +1,7 @@
 package com.amine.clinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +28,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonPropertyOrder({"id", "firstName", "lastName", "email", "phone", "licenseNumber",
+        "specialtyId", "specialtyName"})
 public class Doctor {
 
     @Id
@@ -56,10 +61,33 @@ public class Doctor {
     @Column(length = 150)
     private String licenseNumber;
 
+    @JsonIgnore
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "specialty_id", nullable = false)
     private Specialty specialty;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private List<Appointment> appointments = new ArrayList<>();
+
+    // Flat JSON accessors: the API exposes the specialty as an id plus a
+    // name instead of the nested object (which could recurse back here).
+    public Long getSpecialtyId() {
+        return specialty != null ? specialty.getId() : null;
+    }
+
+    public void setSpecialtyId(Long specialtyId) {
+        if (specialtyId == null) {
+            this.specialty = null;
+        } else {
+            Specialty reference = new Specialty();
+            reference.setId(specialtyId);
+            this.specialty = reference;
+        }
+    }
+
+    public String getSpecialtyName() {
+        return specialty != null ? specialty.getName() : null;
+    }
 }

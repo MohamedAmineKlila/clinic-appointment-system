@@ -1,7 +1,5 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.PrescriptionRequestDTO;
-import com.amine.clinic.dto.PrescriptionResponseDTO;
 import com.amine.clinic.exception.BusinessRuleException;
 import com.amine.clinic.exception.DuplicateResourceException;
 import com.amine.clinic.exception.ResourceNotFoundException;
@@ -29,65 +27,68 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public PrescriptionResponseDTO create(PrescriptionRequestDTO request) {
-        Appointment appointment = null;
-        if (request.getAppointmentId() != null) {
-            final Appointment found = getAppointment(request.getAppointmentId());
-            appointment = found;
-            if (found.getStatus() != AppointmentStatus.BOOKED && found.getStatus() != AppointmentStatus.COMPLETED) {
-                throw new BusinessRuleException("Prescription can only be created for an appointment with status BOOKED or COMPLETED");
-            }
-            prescriptionRepository.findByAppointmentId(found.getId()).ifPresent(existing -> {
-                throw new DuplicateResourceException("Prescription already exists for appointment id: " + found.getId());
+    public Prescription create(Prescription prescription) {
+        if (prescription.getAppointment() != null) {
+            Appointment appointment = getAppointment(prescription.getAppointment().getId());
+            checkAppointmentStatus(appointment);
+            prescriptionRepository.findByAppointment_Id(appointment.getId()).ifPresent(existing -> {
+                throw new DuplicateResourceException("Prescription already exists for appointment id: " + appointment.getId());
             });
+            prescription.setAppointment(appointment);
         }
-        Prescription prescription = new Prescription();
-        mapRequestToEntity(request, prescription, appointment);
         if (prescription.getIssuedDate() == null) {
             prescription.setIssuedDate(LocalDate.now());
         }
-        return toResponse(prescriptionRepository.save(prescription));
+        return prescriptionRepository.save(prescription);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PrescriptionResponseDTO findById(Long id) {
-        return toResponse(getOrThrow(id));
+    public Prescription findById(Long id) {
+        return getOrThrow(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<PrescriptionResponseDTO> findAll() {
-        return prescriptionRepository.findAll().stream().map(this::toResponse).toList();
+    public List<Prescription> findAll() {
+        return prescriptionRepository.findAll();
     }
 
     @Override
-    public PrescriptionResponseDTO update(Long id, PrescriptionRequestDTO request) {
+    public Prescription update(Long id, Prescription request) {
         Prescription prescription = getOrThrow(id);
-        Appointment appointment = null;
-        if (request.getAppointmentId() != null) {
-            final Appointment found = getAppointment(request.getAppointmentId());
-            appointment = found;
-            if (found.getStatus() != AppointmentStatus.BOOKED && found.getStatus() != AppointmentStatus.COMPLETED) {
-                throw new BusinessRuleException("Prescription can only be created for an appointment with status BOOKED or COMPLETED");
-            }
-            prescriptionRepository.findByAppointmentId(found.getId()).ifPresent(existing -> {
+        if (request.getAppointment() != null) {
+            Appointment appointment = getAppointment(request.getAppointment().getId());
+            checkAppointmentStatus(appointment);
+            prescriptionRepository.findByAppointment_Id(appointment.getId()).ifPresent(existing -> {
                 if (!existing.getId().equals(id)) {
-                    throw new DuplicateResourceException("Prescription already exists for appointment id: " + found.getId());
+                    throw new DuplicateResourceException("Prescription already exists for appointment id: " + appointment.getId());
                 }
             });
+            prescription.setAppointment(appointment);
+        } else {
+            prescription.setAppointment(null);
         }
-        mapRequestToEntity(request, prescription, appointment);
+        prescription.setMedication(request.getMedication());
+        prescription.setDosage(request.getDosage());
+        prescription.setInstructions(request.getInstructions());
+        prescription.setIssuedDate(request.getIssuedDate());
         if (prescription.getIssuedDate() == null) {
             prescription.setIssuedDate(LocalDate.now());
         }
-        return toResponse(prescriptionRepository.save(prescription));
+        return prescriptionRepository.save(prescription);
     }
 
     @Override
     public void delete(Long id) {
         Prescription prescription = getOrThrow(id);
         prescriptionRepository.delete(prescription);
+    }
+
+    private void checkAppointmentStatus(Appointment appointment) {
+        if (appointment.getStatus() != AppointmentStatus.BOOKED && appointment.getStatus() != AppointmentStatus.COMPLETED) {
+            throw new BusinessRuleException("Prescription can only be created for an appointment with status BOOKED or COMPLETED");
+        }
     }
 
     private Appointment getAppointment(Long appointmentId) {
@@ -98,24 +99,5 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private Prescription getOrThrow(Long id) {
         return prescriptionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prescription not found with id: " + id));
-    }
-
-    private void mapRequestToEntity(PrescriptionRequestDTO request, Prescription prescription, Appointment appointment) {
-        prescription.setMedication(request.getMedication());
-        prescription.setDosage(request.getDosage());
-        prescription.setInstructions(request.getInstructions());
-        prescription.setIssuedDate(request.getIssuedDate());
-        prescription.setAppointment(appointment);
-    }
-
-    private PrescriptionResponseDTO toResponse(Prescription prescription) {
-        return new PrescriptionResponseDTO(
-                prescription.getId(),
-                prescription.getMedication(),
-                prescription.getDosage(),
-                prescription.getInstructions(),
-                prescription.getIssuedDate(),
-                prescription.getAppointment() != null ? prescription.getAppointment().getId() : null
-        );
     }
 }

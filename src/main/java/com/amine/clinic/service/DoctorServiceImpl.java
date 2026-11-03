@@ -1,7 +1,5 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.DoctorRequestDTO;
-import com.amine.clinic.dto.DoctorResponseDTO;
 import com.amine.clinic.exception.DuplicateResourceException;
 import com.amine.clinic.exception.ResourceNotFoundException;
 import com.amine.clinic.model.Doctor;
@@ -28,35 +26,38 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorResponseDTO create(DoctorRequestDTO request) {
-        checkEmailUnique(request.getEmail(), null);
-        checkLicenseUnique(request.getLicenseNumber(), null);
-        Specialty specialty = getSpecialty(request.getSpecialtyId());
-        Doctor doctor = new Doctor();
-        mapRequestToEntity(request, doctor, specialty);
-        return toResponse(doctorRepository.save(doctor));
+    public Doctor create(Doctor doctor) {
+        checkEmailUnique(doctor.getEmail(), null);
+        checkLicenseUnique(doctor.getLicenseNumber(), null);
+        doctor.setSpecialty(getSpecialty(doctor.getSpecialty().getId()));
+        return doctorRepository.save(doctor);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DoctorResponseDTO findById(Long id) {
-        return toResponse(getOrThrow(id));
+    public Doctor findById(Long id) {
+        return getOrThrow(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<DoctorResponseDTO> findAll() {
-        return doctorRepository.findAll().stream().map(this::toResponse).toList();
+    public List<Doctor> findAll() {
+        return doctorRepository.findAll();
     }
 
     @Override
-    public DoctorResponseDTO update(Long id, DoctorRequestDTO request) {
+    public Doctor update(Long id, Doctor request) {
         Doctor doctor = getOrThrow(id);
         checkEmailUnique(request.getEmail(), id);
         checkLicenseUnique(request.getLicenseNumber(), id);
-        Specialty specialty = getSpecialty(request.getSpecialtyId());
-        mapRequestToEntity(request, doctor, specialty);
-        return toResponse(doctorRepository.save(doctor));
+        Specialty specialty = getSpecialty(request.getSpecialty().getId());
+        doctor.setFirstName(request.getFirstName());
+        doctor.setLastName(request.getLastName());
+        doctor.setEmail(request.getEmail());
+        doctor.setPhone(request.getPhone());
+        doctor.setLicenseNumber(request.getLicenseNumber());
+        doctor.setSpecialty(specialty);
+        return doctorRepository.save(doctor);
     }
 
     @Override
@@ -94,39 +95,17 @@ public class DoctorServiceImpl implements DoctorService {
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + id));
     }
 
-    private void mapRequestToEntity(DoctorRequestDTO request, Doctor doctor, Specialty specialty) {
-        doctor.setFirstName(request.getFirstName());
-        doctor.setLastName(request.getLastName());
-        doctor.setEmail(request.getEmail());
-        doctor.setPhone(request.getPhone());
-        doctor.setLicenseNumber(request.getLicenseNumber());
-        doctor.setSpecialty(specialty);
+    @Override
+    @Transactional(readOnly = true)
+    public List<Doctor> findBySpecialty(Long specialtyId) {
+        return doctorRepository.findBySpecialty_Id(specialtyId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<DoctorResponseDTO> findBySpecialty(Long specialtyId) {
-        return doctorRepository.findBySpecialtyId(specialtyId).stream().map(this::toResponse).toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<DoctorResponseDTO> findAvailable(LocalDate date) {
+    public List<Doctor> findAvailable(LocalDate date) {
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.plusDays(1).atStartOfDay();
-        return doctorRepository.findDoctorsWithNoAppointmentsOnDate(start, end).stream().map(this::toResponse).toList();
-    }
-
-    private DoctorResponseDTO toResponse(Doctor doctor) {
-        return new DoctorResponseDTO(
-                doctor.getId(),
-                doctor.getFirstName(),
-                doctor.getLastName(),
-                doctor.getEmail(),
-                doctor.getPhone(),
-                doctor.getLicenseNumber(),
-                doctor.getSpecialty() != null ? doctor.getSpecialty().getId() : null,
-                doctor.getSpecialty() != null ? doctor.getSpecialty().getName() : null
-        );
+        return doctorRepository.findDoctorsWithNoAppointmentsOnDate(start, end);
     }
 }

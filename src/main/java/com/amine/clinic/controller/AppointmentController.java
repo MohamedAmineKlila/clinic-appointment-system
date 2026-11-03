@@ -1,7 +1,7 @@
 package com.amine.clinic.controller;
 
-import com.amine.clinic.dto.AppointmentRequestDTO;
-import com.amine.clinic.dto.AppointmentResponseDTO;
+import com.amine.clinic.model.Appointment;
+
 import com.amine.clinic.model.AppointmentStatus;
 import com.amine.clinic.service.AppointmentService;
 import jakarta.validation.Valid;
@@ -31,22 +31,22 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentResponseDTO>> findAll() {
+    public ResponseEntity<List<Appointment>> findAll() {
         return ResponseEntity.ok(appointmentService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Appointment> findById(@PathVariable Long id) {
         return ResponseEntity.ok(appointmentService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<AppointmentResponseDTO> create(@Valid @RequestBody AppointmentRequestDTO request) {
+    public ResponseEntity<Appointment> create(@Valid @RequestBody Appointment request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDTO> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequestDTO request) {
+    public ResponseEntity<Appointment> update(@PathVariable Long id, @Valid @RequestBody Appointment request) {
         return ResponseEntity.ok(appointmentService.update(id, request));
     }
 
@@ -57,13 +57,13 @@ public class AppointmentController {
     }
 
     @GetMapping("/doctor/{doctorId}/date/{date}")
-    public ResponseEntity<List<AppointmentResponseDTO>> findByDoctorAndDate(@PathVariable Long doctorId,
+    public ResponseEntity<List<Appointment>> findByDoctorAndDate(@PathVariable Long doctorId,
                                                                           @PathVariable LocalDate date) {
         return ResponseEntity.ok(appointmentService.findByDoctorAndDate(doctorId, date));
     }
 
     @GetMapping("/patient/{patientId}")
-    public ResponseEntity<List<AppointmentResponseDTO>> findByPatient(@PathVariable Long patientId) {
+    public ResponseEntity<List<Appointment>> findByPatient(@PathVariable Long patientId) {
         return ResponseEntity.ok(appointmentService.findByPatient(patientId));
     }
 
@@ -73,7 +73,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/status/{status}/date-range")
-    public ResponseEntity<List<AppointmentResponseDTO>> findByStatusAndDateRange(
+    public ResponseEntity<List<Appointment>> findByStatusAndDateRange(
             @PathVariable AppointmentStatus status,
             @RequestParam LocalDate start,
             @RequestParam LocalDate end) {

@@ -1,19 +1,18 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.MedicalRecordRequestDTO;
-import com.amine.clinic.dto.MedicalRecordResponseDTO;
+import com.amine.clinic.model.MedicalRecord;
 
 import java.util.List;
 
 public interface MedicalRecordService {
 
-    MedicalRecordResponseDTO create(MedicalRecordRequestDTO request);
+    MedicalRecord create(MedicalRecord record);
 
-    MedicalRecordResponseDTO findById(Long id);
+    MedicalRecord findById(Long id);
 
-    List<MedicalRecordResponseDTO> findAll();
+    List<MedicalRecord> findAll();
 
-    MedicalRecordResponseDTO update(Long id, MedicalRecordRequestDTO request);
+    MedicalRecord update(Long id, MedicalRecord record);
 
     void delete(Long id);
 }

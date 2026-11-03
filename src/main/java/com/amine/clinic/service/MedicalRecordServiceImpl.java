@@ -1,7 +1,5 @@
 package com.amine.clinic.service;
 
-import com.amine.clinic.dto.MedicalRecordRequestDTO;
-import com.amine.clinic.dto.MedicalRecordResponseDTO;
 import com.amine.clinic.exception.DuplicateResourceException;
 import com.amine.clinic.exception.ResourceNotFoundException;
 import com.amine.clinic.model.MedicalRecord;
@@ -26,39 +24,41 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public MedicalRecordResponseDTO create(MedicalRecordRequestDTO request) {
-        Patient patient = getPatient(request.getPatientId());
-        medicalRecordRepository.findByPatientId(patient.getId()).ifPresent(existing -> {
+    public MedicalRecord create(MedicalRecord record) {
+        Patient patient = getPatient(record.getPatient().getId());
+        medicalRecordRepository.findByPatient_Id(patient.getId()).ifPresent(existing -> {
             throw new DuplicateResourceException("Medical record already exists for patient id: " + patient.getId());
         });
-        MedicalRecord record = new MedicalRecord();
-        mapRequestToEntity(request, record, patient);
-        return toResponse(medicalRecordRepository.save(record));
+        record.setPatient(patient);
+        return medicalRecordRepository.save(record);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public MedicalRecordResponseDTO findById(Long id) {
-        return toResponse(getOrThrow(id));
+    public MedicalRecord findById(Long id) {
+        return getOrThrow(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<MedicalRecordResponseDTO> findAll() {
-        return medicalRecordRepository.findAll().stream().map(this::toResponse).toList();
+    public List<MedicalRecord> findAll() {
+        return medicalRecordRepository.findAll();
     }
 
     @Override
-    public MedicalRecordResponseDTO update(Long id, MedicalRecordRequestDTO request) {
+    public MedicalRecord update(Long id, MedicalRecord request) {
         MedicalRecord record = getOrThrow(id);
-        Patient patient = getPatient(request.getPatientId());
-        medicalRecordRepository.findByPatientId(patient.getId()).ifPresent(existing -> {
+        Patient patient = getPatient(request.getPatient().getId());
+        medicalRecordRepository.findByPatient_Id(patient.getId()).ifPresent(existing -> {
             if (!existing.getId().equals(id)) {
                 throw new DuplicateResourceException("Medical record already exists for patient id: " + patient.getId());
             }
         });
-        mapRequestToEntity(request, record, patient);
-        return toResponse(medicalRecordRepository.save(record));
+        record.setBloodType(request.getBloodType());
+        record.setAllergies(request.getAllergies());
+        record.setChronicConditions(request.getChronicConditions());
+        record.setPatient(patient);
+        return medicalRecordRepository.save(record);
     }
 
     @Override
@@ -75,22 +75,5 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     private MedicalRecord getOrThrow(Long id) {
         return medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Medical record not found with id: " + id));
-    }
-
-    private void mapRequestToEntity(MedicalRecordRequestDTO request, MedicalRecord record, Patient patient) {
-        record.setBloodType(request.getBloodType());
-        record.setAllergies(request.getAllergies());
-        record.setChronicConditions(request.getChronicConditions());
-        record.setPatient(patient);
-    }
-
-    private MedicalRecordResponseDTO toResponse(MedicalRecord record) {
-        return new MedicalRecordResponseDTO(
-                record.getId(),
-                record.getBloodType(),
-                record.getAllergies(),
-                record.getChronicConditions(),
-                record.getPatient() != null ? record.getPatient().getId() : null
-        );
     }
 }

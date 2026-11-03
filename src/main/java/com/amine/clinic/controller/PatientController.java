@@ -1,7 +1,7 @@
 package com.amine.clinic.controller;
 
-import com.amine.clinic.dto.PatientRequestDTO;
-import com.amine.clinic.dto.PatientResponseDTO;
+import com.amine.clinic.model.Patient;
+
 import com.amine.clinic.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,22 +28,22 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponseDTO>> findAll() {
+    public ResponseEntity<List<Patient>> findAll() {
         return ResponseEntity.ok(patientService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Patient> findById(@PathVariable Long id) {
         return ResponseEntity.ok(patientService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<PatientResponseDTO> create(@Valid @RequestBody PatientRequestDTO request) {
+    public ResponseEntity<Patient> create(@Valid @RequestBody Patient request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(patientService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> update(@PathVariable Long id, @Valid @RequestBody PatientRequestDTO request) {
+    public ResponseEntity<Patient> update(@PathVariable Long id, @Valid @RequestBody Patient request) {
         return ResponseEntity.ok(patientService.update(id, request));
     }
 

@@ -1,7 +1,6 @@
 package com.amine.clinic;
 
-import com.amine.clinic.dto.SpecialtyRequestDTO;
-import com.amine.clinic.dto.SpecialtyResponseDTO;
+import com.amine.clinic.model.Specialty;
 import com.amine.clinic.service.SpecialtyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,11 @@ class SpecialtyServiceTest {
 
     @Test
     void createAndFindSpecialty() {
-        SpecialtyRequestDTO request = new SpecialtyRequestDTO("Test Specialty", "Test description");
-        SpecialtyResponseDTO created = specialtyService.create(request);
+        Specialty specialty = new Specialty();
+        specialty.setName("Test Specialty");
+        specialty.setDescription("Test description");
+
+        Specialty created = specialtyService.create(specialty);
 
         assertThat(created.getId()).isNotNull();
         assertThat(specialtyService.findById(created.getId()).getName()).isEqualTo("Test Specialty");
