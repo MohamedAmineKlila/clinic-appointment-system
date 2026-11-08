@@ -138,7 +138,8 @@ The split between 400 and 409 is deliberate: HTTP 400 Bad Request means the requ
 1. Open Postman.
 2. Click Import and select postman/ClinicAppointmentSystem.postman_collection.json.
 3. Use http://localhost:8080 as the base URL.
-4. Run requests individually or with the Collection Runner.
+4. Run requests individually, or use the Collection Runner to execute the whole collection. Every request contains an automated test (status code, plus JSON body checks for creates, updates and error responses), so the runner reports a pass/fail result for each of the 40 requests.
+5. Run the collection against a freshly started application: the data seeder fills the database on first start, and the create/delete pairs clean up the rows they create, so the collection can be re-run at any time.
 
 ## Example JSON request bodies
 

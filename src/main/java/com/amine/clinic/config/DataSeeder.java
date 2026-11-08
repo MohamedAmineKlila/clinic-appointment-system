@@ -74,10 +74,18 @@ public class DataSeeder implements CommandLineRunner {
         saveMedicalRecord(patient2, "O-", "None", "Hypertension");
         saveMedicalRecord(patient3, "B+", "Penicillin", "Asthma");
         saveMedicalRecord(patient4, "AB+", "None", "Diabetes");
-        saveMedicalRecord(patient5, "O+", "Dust", "None");
+        // patient 5 intentionally starts without a medical record so the Postman
+        // collection can demonstrate creating one (Medical Records - Create).
 
         LocalDateTime now = LocalDateTime.now();
-        Appointment a1 = saveAppointment(doctor1, patient1, now.plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0), "Routine checkup", AppointmentStatus.BOOKED);
+        LocalDateTime firstSlot = now.plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
+        // The Postman collection books doctor 1 on 2026-12-01T09:00. On the one day
+        // a year when this seeded slot would land on that exact date and time, shift
+        // it by 30 minutes so the collection still runs cleanly on a fresh database.
+        if (firstSlot.equals(LocalDateTime.of(2026, 12, 1, 9, 0))) {
+            firstSlot = firstSlot.plusMinutes(30);
+        }
+        Appointment a1 = saveAppointment(doctor1, patient1, firstSlot, "Routine checkup", AppointmentStatus.BOOKED);
         Appointment a2 = saveAppointment(doctor1, patient2, now.plusDays(2).withHour(10).withMinute(0).withSecond(0).withNano(0), "Follow-up visit", AppointmentStatus.COMPLETED);
         Appointment a3 = saveAppointment(doctor2, patient3, now.plusDays(3).withHour(11).withMinute(0).withSecond(0).withNano(0), "Consultation", AppointmentStatus.BOOKED);
         Appointment a4 = saveAppointment(doctor3, patient4, now.plusDays(4).withHour(14).withMinute(0).withSecond(0).withNano(0), "Pediatric review", AppointmentStatus.CANCELLED);

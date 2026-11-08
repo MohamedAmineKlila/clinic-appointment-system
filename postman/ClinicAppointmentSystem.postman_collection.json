@@ -16,14 +16,48 @@
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/specialties"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Specialties - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/specialties/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Specialties - Create",
@@ -40,7 +74,26 @@
           "raw": "{\n  \"name\": \"Neurology\",\n  \"description\": \"Nervous system\"\n}"
         },
         "url": "{{baseUrl}}/api/specialties"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdSpecialtyId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Specialties - Update",
@@ -54,17 +107,47 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Neurology\",\n  \"description\": \"Brain and nervous system\"\n}"
+          "raw": "{\n  \"name\": \"Cardiology\",\n  \"description\": \"Heart and cardiovascular diseases\"\n}"
         },
         "url": "{{baseUrl}}/api/specialties/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Specialties - Delete",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/api/specialties/5"
-      }
+        "url": "{{baseUrl}}/api/specialties/{{createdSpecialtyId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Specialties - Duplicate (409)",
@@ -81,21 +164,72 @@
           "raw": "{\n  \"name\": \"Cardiology\",\n  \"description\": \"Duplicate\"\n}"
         },
         "url": "{{baseUrl}}/api/specialties"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "",
+              "pm.test(\"Error message is returned\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.message\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - List",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/doctors"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/doctors/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Create",
@@ -112,7 +246,26 @@
           "raw": "{\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ben Ali\",\n  \"email\": \"mohamed.benali2@clinic.com\",\n  \"phone\": \"1234567895\",\n  \"licenseNumber\": \"LIC006\",\n  \"specialtyId\": 1\n}"
         },
         "url": "{{baseUrl}}/api/doctors"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdDoctorId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Update",
@@ -126,52 +279,167 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.smith@clinic.com\",\n  \"phone\": \"1234567890\",\n  \"licenseNumber\": \"LIC001\",\n  \"specialtyId\": 1\n}"
+          "raw": "{\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ben Ali\",\n  \"email\": \"mohamed.benali@clinic.com\",\n  \"phone\": \"1234567899\",\n  \"licenseNumber\": \"LIC001\",\n  \"specialtyId\": 1\n}"
         },
         "url": "{{baseUrl}}/api/doctors/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Delete",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/api/doctors/6"
-      }
+        "url": "{{baseUrl}}/api/doctors/{{createdDoctorId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Available",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/doctors/available?date=2026-11-01"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - By Specialty",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/doctors/specialty/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Doctors - Not Found (404)",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/doctors/999"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test(\"Error message is returned\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.message\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - List",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/patients"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/patients/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - Create",
@@ -188,7 +456,26 @@
           "raw": "{\n  \"firstName\": \"Amira\",\n  \"lastName\": \"Bouazizi\",\n  \"email\": \"amira2.bouazizi@email.com\",\n  \"phone\": \"9876543215\",\n  \"dateOfBirth\": \"1993-03-10\"\n}"
         },
         "url": "{{baseUrl}}/api/patients"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdPatientId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - Update",
@@ -205,14 +492,44 @@
           "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Martin\",\n  \"email\": \"alice.martin@email.com\",\n  \"phone\": \"9876543210\",\n  \"dateOfBirth\": \"1990-05-12\"\n}"
         },
         "url": "{{baseUrl}}/api/patients/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - Delete",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/api/patients/6"
-      }
+        "url": "{{baseUrl}}/api/patients/{{createdPatientId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Patients - Invalid (400)",
@@ -229,21 +546,72 @@
           "raw": "{\n  \"firstName\": \"\",\n  \"email\": \"bad-email\"\n}"
         },
         "url": "{{baseUrl}}/api/patients"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test(\"Error message is returned\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.message\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - List",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - Create",
@@ -260,7 +628,60 @@
           "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-01T09:00:00\",\n  \"reason\": \"Routine checkup\",\n  \"status\": \"BOOKED\"\n}"
         },
         "url": "{{baseUrl}}/api/appointments"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdAppointmentId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments - Double Booking (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-01T09:00:00\",\n  \"reason\": \"Routine checkup\",\n  \"status\": \"BOOKED\"\n}"
+        },
+        "url": "{{baseUrl}}/api/appointments"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "",
+              "pm.test(\"Error message is returned\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.message\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - Update",
@@ -274,59 +695,191 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-02T09:00:00\",\n  \"reason\": \"Updated checkup\",\n  \"status\": \"BOOKED\"\n}"
+          "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"appointmentDateTime\": \"2026-12-02T09:00:00\",\n  \"reason\": \"Routine checkup\",\n  \"status\": \"BOOKED\"\n}"
         },
         "url": "{{baseUrl}}/api/appointments/1"
-      }
-    },
-    {
-      "name": "Appointments - Delete",
-      "request": {
-        "method": "DELETE",
-        "url": "{{baseUrl}}/api/appointments/8"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - By Doctor and Date",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments/doctor/1/date/2026-11-01"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - By Patient",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments/patient/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - Count by Status",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments/status/BOOKED/count"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Appointments - Status and Date Range",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/appointments/status/BOOKED/date-range?start=2026-11-01&end=2026-11-30"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/appointments/{{createdAppointmentId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Medical Records - List",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/medical-records"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Medical Records - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/medical-records/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Medical Records - Create",
@@ -340,10 +893,29 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"bloodType\": \"O+\",\n  \"allergies\": \"None\",\n  \"chronicConditions\": \"None\",\n  \"patientId\": 6\n}"
+          "raw": "{\n  \"bloodType\": \"O+\",\n  \"allergies\": \"None\",\n  \"chronicConditions\": \"None\",\n  \"patientId\": 5\n}"
         },
         "url": "{{baseUrl}}/api/medical-records"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdMedicalRecordId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Medical Records - Update",
@@ -360,28 +932,92 @@
           "raw": "{\n  \"bloodType\": \"A+\",\n  \"allergies\": \"Peanuts\",\n  \"chronicConditions\": \"None\",\n  \"patientId\": 1\n}"
         },
         "url": "{{baseUrl}}/api/medical-records/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Medical Records - Delete",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/api/medical-records/6"
-      }
+        "url": "{{baseUrl}}/api/medical-records/{{createdMedicalRecordId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Prescriptions - List",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/prescriptions"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Prescriptions - Get by ID",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/prescriptions/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Prescriptions - Create",
@@ -398,7 +1034,26 @@
           "raw": "{\n  \"medication\": \"Ibuprofen\",\n  \"dosage\": \"200mg\",\n  \"instructions\": \"Take as needed\",\n  \"issuedDate\": \"2026-11-01\",\n  \"appointmentId\": 3\n}"
         },
         "url": "{{baseUrl}}/api/prescriptions"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"createdPrescriptionId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Prescriptions - Update",
@@ -415,14 +1070,44 @@
           "raw": "{\n  \"medication\": \"Aspirin\",\n  \"dosage\": \"100mg\",\n  \"instructions\": \"Take once daily\",\n  \"issuedDate\": \"2026-11-01\",\n  \"appointmentId\": 2\n}"
         },
         "url": "{{baseUrl}}/api/prescriptions/1"
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has an id\", function () {",
+              "    pm.response.to.have.jsonPath(\"$.id\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Prescriptions - Delete",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/api/prescriptions/3"
-      }
+        "url": "{{baseUrl}}/api/prescriptions/{{createdPrescriptionId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
     }
   ]
 }
